@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>条件渲染</title>
+</head>
+<body>
+<div id="root"></div>
+<div id="example1"></div>
+
+<script src="files/react.development.js"></script>
+<script src="files/react-dom.development.js"></script>
+<script src="files/babel.min.js"></script>
+
+<script type="text/babel">
+    //两个显示组件
+    function UserGreeting(props) {
+        return <h1>Welcome back!</h1>
+    }
+
+    function GuestGreeting(props) {
+        return <h1>Please sign up.</h1>
+    }
+
+    /*使用 JavaScript 运算符if或者条件运算符去创建元素来表现当前的状态*/
+    function Greeting(props) {
+        const isLoggedIn = props.isLoggedIn
+        if(isLoggedIn) {
+            return <UserGreeting />
+        }
+        return <GuestGreeting />
+    }
+
+    //注销和登录按钮组件
+    function LoginButton(props) {
+        return (
+            <button onClick={props.onClick}>
+                Login
+            </button>
+        )
+    }
+    function LogoutButton(props) {
+        return (
+            <button onClick={props.onClick}>
+                Logout
+            </button>
+        )
+    }
+
+    /*
+    * 创建一个名叫 LoginControl 的有状态的组件
+    * 根据当前的状态来渲染 <LoginButton /> 或者 <LogoutButton />。
+    * 同时它还会渲染上一个示例中的 <Greeting />
+    * */
+
+    class LoginControl extends React.Component {
+        constructor(props) {
+            super(props)
+
+            //初始化state
+            this.state = {isLoggedIn: false}
+
+            //给新增方法handleClick()绑定this
+            this.handleClick = this.handleClick.bind(this)
+        }
+
+        //处理点击按钮事件
+        handleClick() {
+            this.setState(state => ({
+                isLoggedIn: !state.isLoggedIn
+                }))
+        }
+
+        render() {
+            const isLoggedIn = this.state.isLoggedIn
+            let button
+
+            if(isLoggedIn) {
+                button = <LogoutButton onClick={this.handleClick} />
+            } else {
+                button = <LoginButton onClick={this.handleClick} />
+            }
+
+            return (
+                <div>
+                    <Greeting isLoggedIn={isLoggedIn} />
+                    {button}
+                </div>
+            )
+        }
+    }
+
+    //渲染组件
+    ReactDOM.render(<LoginControl />, document.getElementById('root'))
+
+    //与运算符 &&
+    const messages = ['React', 'Re: React', 'Re:Re: React']
+
+    function Mailbox(props) {
+        const unreadMessages = props.unreadMessages
+        return (
+            <div>
+                <h1>Hello!</h1>
+                {unreadMessages.length > 0 &&
+                    <h2>
+                        You have {unreadMessages.length} unread messages.
+                    </h2>
+                }
+            </div>
+        )
+    }
+    ReactDOM.render(
+        <Mailbox unreadMessages={messages}/>,
+        document.getElementById('example1')
+    )
+</script>
+</body>
+</html>

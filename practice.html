@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSX</title>
+</head>
+<body>
+<div id="root"></div>
+<div id="root1"></div>
+<div id="root2"></div>
+
+<script src="files/react.development.js"></script>
+<script src="files/react-dom.development.js"></script>
+<script src="files/babel.min.js"></script>
+
+<script type="text/babel">
+    const name = 'Josh Perez'
+    const element = <h1>Hello, {name}</h1>
+
+    ReactDOM.render(element, document.getElementById('root'))
+
+    //在{}内放置JS表达式（变量）
+
+    function formatName(user) {
+        return `${user.firstName} ${user.lastName}`
+    }
+
+    const user = {
+        firstName: 'Harper',
+        lastName: 'Perez'
+    }
+
+    const vDOM = (                         //将JSX拆分成多行，同时用()包裹
+        <h1>
+            hello, {formatName(user)}!
+        </h1>
+    )
+
+    ReactDOM.render(vDOM, document.getElementById('root1'))
+
+    function tick() {
+        const element1 = (
+            <div>
+                <h1>Hello, world!</h1>
+                <h2>It is {new Date().toLocaleTimeString()}.</h2>
+            </div>
+        )
+        ReactDOM.render(element1, document.getElementById('root2'))
+    }
+
+    let timer = setInterval(tick, 1000)
+    clearInterval(timer)
+</script>
+</body>
+</html>

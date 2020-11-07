@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表单</title>
+</head>
+<body>
+<div id="root"></div>
+<div id="example1"></div>
+
+<script src="files/react.development.js"></script>
+<script src="files/react-dom.development.js"></script>
+<script src="files/babel.min.js"></script>
+
+<script type="text/babel">
+    class NameForm extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = {name: ''}
+            this.handleSubmit = this.handleSubmit.bind(this)
+            this.handleChange = this.handleChange.bind(this)
+        }
+
+        handleChange(event) {
+            this.setState({name: event.target.value})
+        }
+
+        handleSubmit(event) {
+            alert(`提交的名字: ${this.state.name}`)
+            //阻止默认事件（提交表单）
+            event.preventDefault()
+        }
+
+        render() {
+            return <form onSubmit={this.handleSubmit}>
+                <label>
+                    名字: <input type="text" value={this.state.name}
+                               onChange={this.handleChange}/>
+                </label>
+                <input type="submit" value="提交"/>
+            </form>
+        }
+    }
+
+    ReactDOM.render(<NameForm />, document.getElementById('root'))
+</script>
+</body>
+</html>

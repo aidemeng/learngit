@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>State&生命周期</title>
+</head>
+<body>
+<div id="example2"></div>
+
+<script src="files/react.development.js"></script>
+<script src="files/react-dom.development.js"></script>
+<script src="files/babel.min.js"></script>
+
+<script type="text/babel">
+    //将函数组件转换成 class 组件
+    /*
+        1.创建一个同名的 ES6 class，并且继承于 React.Component。
+        2.添加一个空的 render() 方法。
+        3.将函数体移动到 render() 方法之中。
+        4.在render()方法中使用 this.props 替换 props。
+        5.删除剩余的空函数声明
+    */
+    /*class Clock extends React.Component {
+        render() {
+            return (
+                <div>
+                    <h1>Hello, world!</h1>
+                    <h2>It is {this.props.date.toLocaleTimeString()}.</h2>
+                </div>
+            )
+        }
+    }*/
+
+    //向 class 组件中添加局部的state
+    /*
+        1.把render()方法中的 this.props.date 替换成 this.state.date
+        2.添加一个 class 构造函数，然后在该函数中为 this.state 赋初值
+        3.移除 <Clock /> 元素中的 date 属性
+    */
+    class Clock extends React.Component {
+        constructor(props) {               //继承父类的props属性
+            super(props)
+            this.state = {date: new Date()}       //this指向子类的实例对象,为this.state赋初值
+        }
+
+        componentDidMount() {
+            this.timerID = setInterval(
+                () => this.tick(), 1000
+            )
+        }
+
+        componentWillUnmount() {
+            clearInterval(this.timerID)
+        }
+
+        tick() {
+            this.setState({
+                date: new Date()
+            })
+        }
+
+        render() {
+            return (
+                <div>
+                    <h1>Hello, world!</h1>
+                    <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+                </div>
+            )
+        }
+    }
+
+    ReactDOM.render(
+        <Clock />, document.getElementById('example2')
+    )
+
+    //设置 Clock 的计时器并每秒更新它。
+    /*
+        我们可以为 class 组件声明一些特殊的方法，
+        当组件挂载或卸载时就会去执行这些方法,这些方法叫做“生命周期方法”
+    */
+    /*componentDidMount() {            //componentDidMount() 方法会在组件已经被渲染到 DOM 中后运行
+    }
+
+    componentWillUnmount() {         //
+    }*/
+
+    /*
+        正确地使用 State
+        给state赋值使用setState()方法
+    */
+</script>
+</body>
+</html>
